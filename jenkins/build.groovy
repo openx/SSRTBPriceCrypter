@@ -28,8 +28,7 @@ podTemplate(
         sh """#!/bin/sh
 		mvn -B -DskipTests clean package
 		mvn -B test
-		mvn -B install
-		mvn -B publish
+		mvn -B deploy
         """
       }
     }

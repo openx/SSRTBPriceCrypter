@@ -14,7 +14,7 @@
     </scm>
 
     <properties>
-        <ox.gar.maven.host>artifactregistry://us-central1-maven.pkg.dev/ox-shared-infrastructure-devin</ox.gar.maven.host>
+        <ox.gar.maven.host>artifactregistry://us-central1-maven.pkg.dev/ox-registry-devint</ox.gar.maven.host>
     </properties>
 
     <dependencies>

@@ -1,0 +1,10 @@
+---
+timeout: 6000s
+steps:
+  - id: publish
+    name: us-central1-docker.pkg.dev/ox-registry-devint/container-registry-devint/java-base:latest
+    args:
+      - make
+      - ci_publish
+    waitFor:
+      - "-"

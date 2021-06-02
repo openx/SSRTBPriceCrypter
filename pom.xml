@@ -8,16 +8,43 @@
 
   <distributionManagement>
     <repository>
-      <id>artifactory-releases</id>
-      <name>artifactory-release</name>
-      <url>https://artifactory.prod.gcp.openx.org/artifactory/libs-release-local</url>
+      <id>${repo-id}</id>
+      <name>${repo-name}</name>
+      <url>${repo-url}/${release-path}</url>
     </repository>
     <snapshotRepository>
-      <id>artifactory-snapshots</id>
-      <name>artifactory-snapshots</name>
-      <url>https://artifactory.prod.gcp.openx.org/artifactory/libs-snapshot-local</url>
+      <id>${repo-id}</id>
+      <name>${repo-name}</name>
+      <url>${repo-url}/${snapshot-path}</url>
     </snapshotRepository>
   </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>gar-profile</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <repo-id>artifact-registry</repo-id>
+        <repo-name>gar-artifact-registry</repo-name>
+        <repo-url>artifactregistry://us-central1-maven.pkg.dev/ox-registry-prod</repo-url>
+        <snapshot-path>ox-snapshots</snapshot-path>
+        <release-path>ox-releases</release-path>
+      </properties>
+    </profile>
+    <profile>
+      <id>artifactory-profile</id>
+      <properties>
+        <repo-id>artifactory-repo</repo-id>
+        <repo-name>prod-maven-server-xv-01.xv.dc.openx</repo-name>
+        <repo-url>https://artifactory.prod.gcp.openx.org</repo-url>
+        <snapshot-path>artifactory/libs-snapshot-local</snapshot-path>
+        <release-path>artifactory/libs-release-local</release-path>
+      </properties>
+    </profile>
+  </profiles>
+
 
   <scm>
     <connection>scm:git:https://github.com/openx/SSRTBPriceCrypter.git</connection>
@@ -74,5 +101,17 @@
         </executions>
       </plugin>
     </plugins>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>2.2</version>
+      </extension>
+      <extension>
+        <groupId>com.google.cloud.artifactregistry</groupId>
+        <artifactId>artifactregistry-maven-wagon</artifactId>
+        <version>2.1.1</version>
+      </extension>
+    </extensions>
   </build>
 </project>

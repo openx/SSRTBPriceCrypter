@@ -1,0 +1,25 @@
+---
+timeout: 6000s
+options:
+steps:
+- id: "test"
+  name: us-central1-docker.pkg.dev/$_REGISTRY_PROJECT_ID/container-registry-prod/$_BUILDER_IMAGE:$_BUILDER_IMAGE_TAG
+  args:
+  - /bin/bash
+  - -c
+  - |
+    set -e
+    mvn -B -DskipTests clean package
+    mvn -B test
+  waitFor:
+  - "-"
+
+- id: "deploy"
+  name: us-central1-docker.pkg.dev/$_REGISTRY_PROJECT_ID/container-registry-prod/$_BUILDER_IMAGE:$_BUILDER_IMAGE_TAG
+  args:
+  - /bin/bash
+  - -c
+  - |
+    mvn deploy -Dmaven.test.skip=true --no-transfer-progress
+  waitFor:
+  - "test"

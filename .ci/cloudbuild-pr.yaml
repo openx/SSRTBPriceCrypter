@@ -2,16 +2,14 @@
 timeout: 6000s
 options:
 steps:
-- id: "build"
+- id: "test"
   name: us-central1-docker.pkg.dev/$_REGISTRY_PROJECT_ID/container-registry-prod/$_BUILDER_IMAGE:$_BUILDER_IMAGE_TAG
   args:
   - /bin/bash
   - -c
   - |
-    mkdir ~/.m2
-    cp .m2/settings.xml ~/.m2/settings.xml
+    set -e
     mvn -B -DskipTests clean package
     mvn -B test
-    awk -F"," '{ instructions += \$4 + \$5;  covered += \$5 } END { print "Code Coverage: ", 100*covered/instructions, "%" }' target/site/jacoco/jacoco.csv || true
   waitFor:
   - "-"
